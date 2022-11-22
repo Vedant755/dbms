@@ -1,0 +1,86 @@
+import java.net.UnknownHostException;
+import java.io.*;
+import java.util.Date;
+import com.mongodb.*;
+public class App
+{
+public static void main(String[] args)
+{
+BufferedReader br=null; int ch,eid,sal;
+String sql,name,desig; try
+{
+br=new BufferedReader(new InputStreamReader(System.in)); /**** Connect to MongoDB ****/
+MongoClient mongo = new MongoClient("localhost", 27017);
+/**** Get database ****/
+// if database doesn't exists, MongoDB will create it for you DB db = mongo.getDB("dmsa");
+/**** Get collection / table from 'testdb' ****/
+// if collection doesn't exists, MongoDB will create it for you DBCollection table = db.getCollection("emp");
+do {
+System.out.println("\n\nChoices for User"); System.out.println("1.Insert document"); System.out.println("2.View document"); System.out.println("3.Update document"); System.out.println("4.Delete document"); System.out.println("5.Exit"); System.out.println("Enter the choice="); ch=Integer.parseInt(br.readLine()); switch(ch)
+{
+case 1:
+  PROF. SAGAR SHINDE 35
+  
+want you to update=");
+System.out.println("\nINSERT RECORD:"); System.out.println("Enter the emp_id="); eid=Integer.parseInt(br.readLine()); System.out.println("Enter the emp_name="); name=br.readLine();
+System.out.println("Enter the emp_salary="); sal=Integer.parseInt(br.readLine()); System.out.println("Enter the emp_designation="); desig=br.readLine();
+//To insert Data into DB
+BasicDBObject document = new BasicDBObject(); document.put("empid", eid); document.put("ename", name); document.put("salary", sal); document.put("designation", desig); table.insert(document);
+System.out.println("\nDocumet inserted successfully...."); break;
+case 2:
+BasicDBObject searchQuery = new BasicDBObject(); //searchQuery.put();
+DBCursor cursor = table.find();
+while (cursor.hasNext())
+{
+System.out.println(cursor.next());
+} break;
+case 3:
+BasicDBObject query = new BasicDBObject(); BasicDBObject newDocument = new BasicDBObject(); BasicDBObject updateObj = new BasicDBObject();
+System.out.println("\nUpdate Record Options:"); System.out.println("1.Update salary."); System.out.println("2.Update designation."); System.out.println("Enter the choice=");
+int ch2=Integer.parseInt(br.readLine()); switch(ch2)
+{
+case 1:
+System.out.println("Enter the emp_id whoes record
+eid=Integer.parseInt(br.readLine()); System.out.println("Enter the new salary="); sal=Integer.parseInt(br.readLine()); query.put("empid", eid); newDocument.put("salary", sal);
+  PROF. SAGAR SHINDE 36
+  
+delete=");
+updateObj.put("$set", newDocument);
+table.update(query, updateObj); System.out.println("\nDocument Updated Successfully..."); break;
+case 2:
+System.out.println("Enter the emp_id whoes record want you to update="); eid=Integer.parseInt(br.readLine());
+System.out.println("Enter the new designation="); desig=br.readLine();
+query.put("empid", eid); newDocument.put("designation", desig); updateObj.put("$set", newDocument); table.update(query, updateObj);
+System.out.println("\nDocument Updated Successfully..."); break;
+default: System.out.println("\nInvalid Choice");
+} break;
+case 4:
+System.out.println("\nDelete Record Options:"); System.out.println("1.Delete Particular data"); System.out.println("Enter the choice=");
+int ch1=Integer.parseInt(br.readLine());
+switch(ch1)
+{
+case 1:
+System.out.println("Enter the emp_id whoes record want you to
+eid=Integer.parseInt(br.readLine()); System.out.println("\nRecord Deleted Successfully..."); BasicDBObject a = new BasicDBObject(); a.put("empid", eid);
+table.remove(a);
+break;
+default:
+System.out.println("\nIsnvalid Choice");
+}
+break;
+case 5:
+break;
+default:
+System.out.println("\nInvalid Choice");
+}
+}while(ch!=5);
+/**** Done ****/ System.out.println("Thank You...");
+} }
+System.out.println("Programmed by:SHRINIWAS DESHMUKH.."); }
+catch (UnknownHostException e)
+{
+e.printStackTrace(); }
+catch (MongoException e) {
+e.printStackTrace(); }
+catch(IOException e) {
+e.printStackTrace(); }
